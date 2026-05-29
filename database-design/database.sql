@@ -71,6 +71,9 @@ CREATE TABLE IF NOT EXISTS transactions (
   discount NUMERIC(10, 2) DEFAULT 0.00,
   total_price NUMERIC(10, 2) NOT NULL,
   payment_status VARCHAR(50) DEFAULT 'PENDING',
+  payment_method VARCHAR(50) NOT NULL, -- e.g., 'VA', 'QRIS', 'ALFANUMERIC'
+  payment_reference VARCHAR(150), -- VA / Kode QRIS / Kode Alfanumerik retail
+  payment_url TEXT, -- link payment PG (optional)
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   deleted_at TIMESTAMP

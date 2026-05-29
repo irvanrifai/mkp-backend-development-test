@@ -8,44 +8,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/irvanrifai/mkp-backend-development-test/api-ticketing/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/irvanrifai/mkp-backend-development-test/api-ticketing/mocks"
+	"github.com/irvanrifai/mkp-backend-development-test/api-ticketing/models"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
-type mockScheduleUsecase struct {
-	mock.Mock
-}
-
-func (m *mockScheduleUsecase) Create(schedule models.Schedule) (models.Schedule, error) {
-	args := m.Called(schedule)
-	return args.Get(0).(models.Schedule), args.Error(1)
-}
-
-func (m *mockScheduleUsecase) FindAll() ([]models.Schedule, error) {
-	args := m.Called()
-	return args.Get(0).([]models.Schedule), args.Error(1)
-}
-
-func (m *mockScheduleUsecase) FindByID(id uint) (models.Schedule, error) {
-	args := m.Called(id)
-	return args.Get(0).(models.Schedule), args.Error(1)
-}
-
-func (m *mockScheduleUsecase) Update(id uint, schedule models.Schedule) (models.Schedule, error) {
-	args := m.Called(id, schedule)
-	return args.Get(0).(models.Schedule), args.Error(1)
-}
-
-func (m *mockScheduleUsecase) Delete(id uint) error {
-	args := m.Called(id)
-	return args.Error(0)
-}
-
 func TestScheduleHandler_Update_Success(t *testing.T) {
 	app := fiber.New()
-	usecase := &mockScheduleUsecase{}
+	usecase := mocks.NewIScheduleUsecase(t)
 	handler := NewScheduleHandler(usecase)
 	app.Put("/schedules/:id", handler.Update)
 
@@ -67,7 +39,9 @@ func TestScheduleHandler_Update_Success(t *testing.T) {
 		Status:         "ACTIVE",
 	}
 
-	usecase.On("Update", uint(1), mock.AnythingOfType("models.Schedule")).Return(updatedSchedule, nil)
+	usecase.EXPECT().
+		Update(uint(1), mock.Anything).
+		Return(updatedSchedule, nil)
 
 	req := httptest.NewRequest(http.MethodPut, "/schedules/1", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
@@ -82,13 +56,11 @@ func TestScheduleHandler_Update_Success(t *testing.T) {
 	assert.Equal(t, updatedSchedule.MovieID, got.MovieID)
 	assert.Equal(t, updatedSchedule.StudioID, got.StudioID)
 	assert.Equal(t, updatedSchedule.Status, got.Status)
-
-	usecase.AssertExpectations(t)
 }
 
 func TestScheduleHandler_Update_InvalidID(t *testing.T) {
 	app := fiber.New()
-	usecase := &mockScheduleUsecase{}
+	usecase := mocks.NewIScheduleUsecase(t)
 	handler := NewScheduleHandler(usecase)
 	app.Put("/schedules/:id", handler.Update)
 

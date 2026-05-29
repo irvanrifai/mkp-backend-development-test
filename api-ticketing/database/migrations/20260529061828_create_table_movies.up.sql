@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS movies (
 INSERT INTO
   "movies" (
     title,
-    duration_minutes,
+    duration_minutes
   )
 VALUES
   ('Insidious', 59),

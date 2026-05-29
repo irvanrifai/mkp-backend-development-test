@@ -7,11 +7,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/irvanrifai/mkp-backend-development-test/api-ticketing/database"
 	authHandler "github.com/irvanrifai/mkp-backend-development-test/api-ticketing/internal/delivery/http/auth"
-	eventHandler "github.com/irvanrifai/mkp-backend-development-test/api-ticketing/internal/delivery/http/event"
+	scheduleHandler "github.com/irvanrifai/mkp-backend-development-test/api-ticketing/internal/delivery/http/schedule"
 	"github.com/irvanrifai/mkp-backend-development-test/api-ticketing/internal/middleware"
-	eventRepository "github.com/irvanrifai/mkp-backend-development-test/api-ticketing/internal/repository/event"
+	scheduleRepository "github.com/irvanrifai/mkp-backend-development-test/api-ticketing/internal/repository/schedule"
 	userRepository "github.com/irvanrifai/mkp-backend-development-test/api-ticketing/internal/repository/user"
-	eventUsecase "github.com/irvanrifai/mkp-backend-development-test/api-ticketing/internal/usecase/event"
+	scheduleUsecase "github.com/irvanrifai/mkp-backend-development-test/api-ticketing/internal/usecase/schedule"
 	userUsecase "github.com/irvanrifai/mkp-backend-development-test/api-ticketing/internal/usecase/user"
 	"github.com/joho/godotenv"
 )
@@ -28,9 +28,9 @@ func main() {
 	userUC := userUsecase.NewUserUsecase(userRepo, os.Getenv("JWT_SECRET"))
 	authHandler := authHandler.NewAuthHandler(userUC)
 
-	eventRepo := eventRepository.NewEventRepository(db)
-	eventUC := eventUsecase.NewEventUsecase(eventRepo)
-	eventHandler := eventHandler.NewEventHandler(eventUC)
+	scheduleRepo := scheduleRepository.NewScheduleRepository(db)
+	scheduleUC := scheduleUsecase.NewScheduleUsecase(scheduleRepo)
+	scheduleHandler := scheduleHandler.NewScheduleHandler(scheduleUC)
 
 	app := fiber.New()
 	api := app.Group("/api")
@@ -40,17 +40,13 @@ func main() {
 	auth.Post("/register", authHandler.Register)
 	auth.Post("/login", authHandler.Login)
 
-	// Event Routes
-	events := api.Group("/events")
-
-	// Public: List & Detail
-	events.Get("/", eventHandler.List)
-	events.Get("/:id", eventHandler.Detail)
-
-	// Protected: Create, Update, Delete
-	events.Post("/", middleware.Protected, eventHandler.Create)
-	events.Put("/:id", middleware.Protected, eventHandler.Update)
-	events.Delete("/:id", middleware.Protected, eventHandler.Delete)
+	// Schedule Routes
+	schedules := api.Group("/schedules")
+	schedules.Get("/", middleware.Protected, scheduleHandler.List)
+	schedules.Post("/", middleware.Protected, scheduleHandler.Create)
+	schedules.Get("/:id", middleware.Protected, scheduleHandler.Detail)
+	schedules.Put("/:id", middleware.Protected, scheduleHandler.Update)
+	schedules.Delete("/:id", middleware.Protected, scheduleHandler.Delete)
 
 	port := os.Getenv("APP_PORT")
 	if port == "" {

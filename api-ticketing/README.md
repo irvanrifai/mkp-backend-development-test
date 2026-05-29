@@ -1,6 +1,6 @@
-# 🚀 Go Event App Boilerplate
+# API Ticketing
 
-Boilerplate backend menggunakan **Golang** dengan arsitektur **Clean Layered Architecture**. Menggunakan **Fiber** untuk performa tinggi, **GORM** sebagai ORM, dan **PostgreSQL** untuk database.
+Backend service menggunakan **Golang** dengan arsitektur **Clean Layered Architecture**. Menggunakan **Fiber** untuk performa tinggi, **GORM** sebagai ORM, dan **PostgreSQL** untuk database.
 
 ## 🛠 Tech Stack
 
@@ -37,8 +37,6 @@ Proyek ini mengikuti pola **Package by Feature** untuk skalabilitas maksimal:
 go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
 ```
-
-
 
 ### 2. Setup Environment
 

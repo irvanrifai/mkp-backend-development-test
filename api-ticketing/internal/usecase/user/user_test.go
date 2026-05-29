@@ -18,10 +18,11 @@ func TestUserUsecase_Register_Success(t *testing.T) {
 		Create(mock.AnythingOfType("*models.User")).
 		Return(nil)
 
-	result, err := uc.Register("John Doe", "john@example.com", "password")
+	result, err := uc.Register("John Doe", "johndoe", "john@example.com", "password")
 
 	assert.NoError(t, err)
 	assert.Equal(t, "John Doe", result.Name)
+	assert.Equal(t, "johndoe", result.Username)
 	assert.Equal(t, "john@example.com", result.Email)
 }
 

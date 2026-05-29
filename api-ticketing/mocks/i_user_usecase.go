@@ -77,9 +77,9 @@ func (_c *IUserUsecase_Login_Call) RunAndReturn(run func(string, string) (string
 	return _c
 }
 
-// Register provides a mock function with given fields: name, email, password
-func (_m *IUserUsecase) Register(name string, email string, password string) (models.User, error) {
-	ret := _m.Called(name, email, password)
+// Register provides a mock function with given fields: name, username, email, password
+func (_m *IUserUsecase) Register(name string, username string, email string, password string) (models.User, error) {
+	ret := _m.Called(name, username, email, password)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Register")
@@ -87,17 +87,17 @@ func (_m *IUserUsecase) Register(name string, email string, password string) (mo
 
 	var r0 models.User
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string, string, string) (models.User, error)); ok {
-		return rf(name, email, password)
+	if rf, ok := ret.Get(0).(func(string, string, string, string) (models.User, error)); ok {
+		return rf(name, username, email, password)
 	}
-	if rf, ok := ret.Get(0).(func(string, string, string) models.User); ok {
-		r0 = rf(name, email, password)
+	if rf, ok := ret.Get(0).(func(string, string, string, string) models.User); ok {
+		r0 = rf(name, username, email, password)
 	} else {
 		r0 = ret.Get(0).(models.User)
 	}
 
-	if rf, ok := ret.Get(1).(func(string, string, string) error); ok {
-		r1 = rf(name, email, password)
+	if rf, ok := ret.Get(1).(func(string, string, string, string) error); ok {
+		r1 = rf(name, username, email, password)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -112,15 +112,16 @@ type IUserUsecase_Register_Call struct {
 
 // Register is a helper method to define mock.On call
 //   - name string
+//   - username string
 //   - email string
 //   - password string
-func (_e *IUserUsecase_Expecter) Register(name interface{}, email interface{}, password interface{}) *IUserUsecase_Register_Call {
-	return &IUserUsecase_Register_Call{Call: _e.mock.On("Register", name, email, password)}
+func (_e *IUserUsecase_Expecter) Register(name interface{}, username interface{}, email interface{}, password interface{}) *IUserUsecase_Register_Call {
+	return &IUserUsecase_Register_Call{Call: _e.mock.On("Register", name, username, email, password)}
 }
 
-func (_c *IUserUsecase_Register_Call) Run(run func(name string, email string, password string)) *IUserUsecase_Register_Call {
+func (_c *IUserUsecase_Register_Call) Run(run func(name string, username string, email string, password string)) *IUserUsecase_Register_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(string), args[1].(string), args[2].(string))
+		run(args[0].(string), args[1].(string), args[2].(string), args[3].(string))
 	})
 	return _c
 }
@@ -130,7 +131,7 @@ func (_c *IUserUsecase_Register_Call) Return(_a0 models.User, _a1 error) *IUserU
 	return _c
 }
 
-func (_c *IUserUsecase_Register_Call) RunAndReturn(run func(string, string, string) (models.User, error)) *IUserUsecase_Register_Call {
+func (_c *IUserUsecase_Register_Call) RunAndReturn(run func(string, string, string, string) (models.User, error)) *IUserUsecase_Register_Call {
 	_c.Call.Return(run)
 	return _c
 }

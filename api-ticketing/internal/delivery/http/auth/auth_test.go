@@ -21,13 +21,14 @@ func TestAuthHandler_Register_Success(t *testing.T) {
 
 	payload := map[string]any{
 		"name":     "John Doe",
+		"username": "johndoe",
 		"email":    "john@example.com",
 		"password": "password",
 	}
 	body, _ := json.Marshal(payload)
 
 	usecase.EXPECT().
-		Register("John Doe", "john@example.com", "password").
+		Register("John Doe", "johndoe", "john@example.com", "password").
 		Return(models.User{ID: 1, Name: "John Doe", Email: "john@example.com", Username: "johndoe"}, nil)
 
 	req := httptest.NewRequest(http.MethodPost, "/auth/register", bytes.NewReader(body))

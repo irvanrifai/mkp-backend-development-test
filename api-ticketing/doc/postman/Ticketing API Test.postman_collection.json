@@ -1,0 +1,317 @@
+{
+  "info": {
+    "_postman_id": "8d22cbb2-7112-44d2-bd2f-e7f66abbe54b",
+    "name": "Ticketing API Test",
+    "description": "Ticketing API Test collection for testing API auth and schedule management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21481584"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('response status code should have 201 value', () => {",
+              "   pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('response Content-Type header should have application/json value', () => {",
+              "  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json');",
+              "});",
+              "",
+              "pm.test('response body should be an object', () => {",
+              "    const response = pm.response.json();",
+              "    pm.expect(response).to.be.an('object');",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"{{user_name}}\",\n  \"username\": \"{{user_username}}\",\n  \"email\": \"{{user_email}}\",\n  \"password\": \"{{user_password}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/register",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('response body token set to current token', () => {",
+              "    const responseJson = pm.response.json();",
+              " ",
+              "    pm.expect(responseJson).to.ownProperty('token');",
+              "    pm.expect(responseJson.token).to.not.equals('');",
+              " ",
+              "    pm.environment.set('token', responseJson.token);",
+              "});",
+              "",
+              "pm.test('response status code should have 200 value', () => {",
+              "   pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('response Content-Type header should have application/json value', () => {",
+              "  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json');",
+              "});",
+              "",
+              "pm.test('response body should be an object', () => {",
+              "    const response = pm.response.json();",
+              "    pm.expect(response).to.be.an('object');",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{user_email}}\",\n  \"password\": \"{{user_password}}\",\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Schedule",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('response status code should have 201 value', () => {",
+              "   pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('response Content-Type header should have application/json value', () => {",
+              "  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json');",
+              "});",
+              "",
+              "pm.test('response body should be an object', () => {",
+              "    const response = pm.response.json();",
+              "    pm.expect(response).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('response body set to current scheduleId', () => {",
+              "    const responseJson = pm.response.json();",
+              " ",
+              "    pm.expect(responseJson).to.ownProperty('id');",
+              "    pm.expect(responseJson.id).to.not.equals('');",
+              " ",
+              "    pm.environment.set('scheduleId', responseJson.id);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODAzMDU0NzgsInVzZXJfaWQiOjh9.x1Onh33l7xOBzptje_NOD1zFOIrTwcd_KNTo9yQmHOg",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"movie_id\": {{movie_id}},\n  \"studio_id\": {{studio_id}},\n  \"show_time\": \"2026-05-29T15:00:00Z\",\n  \"price_per_ticket\": 125000,\n  \"status\": \"{{status_active}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/schedules",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "schedules"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List Schedules",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODAzMDU0NzgsInVzZXJfaWQiOjh9.x1Onh33l7xOBzptje_NOD1zFOIrTwcd_KNTo9yQmHOg",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/schedules",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "schedules"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get One Schedule",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODAzMDU0NzgsInVzZXJfaWQiOjh9.x1Onh33l7xOBzptje_NOD1zFOIrTwcd_KNTo9yQmHOg",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/schedules/{{scheduleId}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "schedules",
+            "{{scheduleId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Schedule",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODAzMDU0NzgsInVzZXJfaWQiOjh9.x1Onh33l7xOBzptje_NOD1zFOIrTwcd_KNTo9yQmHOg",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"movie_id\": {{movie_id}},\n  \"studio_id\": {{studio_id}},\n  \"show_time\": \"2026-05-29T15:00:00Z\",\n  \"price_per_ticket\": 123000,\n  \"status\": \"{{status_active}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/schedules/{{scheduleId}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "schedules",
+            "{{scheduleId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Schedule",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODAzMDU0NzgsInVzZXJfaWQiOjh9.x1Onh33l7xOBzptje_NOD1zFOIrTwcd_KNTo9yQmHOg",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{base_url}}/api/schedules/{{scheduleId}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "schedules",
+            "{{scheduleId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

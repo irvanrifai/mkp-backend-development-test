@@ -35,6 +35,7 @@ Begitu kursi berhasil dikunci di Redis, backend segera melakukan operasi penulis
 1. Membuat baris baru pada tabel `transactions` dengan status `payment_status = 'PENDING'`.
 2. Mencatat daftar nomor kursi yang dipesan ke tabel `ticket_seats`.
 3. Menghasilkan nomor invoice unik dan meminta *Payment Gateway* untuk menerbitkan instruksi pembayaran (seperti Virtual Account atau QRIS).
+4. Penyimpanan Lokal Data Pihak Ketiga: Backend menyimpan metadata dari Payment Gateway seperti `payment_method`, `payment_reference`, dan `payment_url` langsung ke tabel `transactions`.
 
 ### B. Alur Restok Tiket Otomatis
 

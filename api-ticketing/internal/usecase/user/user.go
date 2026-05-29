@@ -11,7 +11,7 @@ import (
 )
 
 type IUserUsecase interface {
-	Register(name, email, password string) (models.User, error)
+	Register(name, username, email, password string) (models.User, error)
 	Login(email, password string) (string, error)
 }
 
@@ -24,9 +24,9 @@ func NewUserUsecase(repo user.IUserRepository, secret string) IUserUsecase {
 	return &userUsecase{repo, secret}
 }
 
-func (u *userUsecase) Register(name, email, password string) (models.User, error) {
+func (u *userUsecase) Register(name, username, email, password string) (models.User, error) {
 	hashed, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	user := models.User{Name: name, Email: email, Password: string(hashed)}
+	user := models.User{Name: name, Username: username, Email: email, Password: string(hashed)}
 	err := u.repo.Create(&user)
 	return user, err
 }

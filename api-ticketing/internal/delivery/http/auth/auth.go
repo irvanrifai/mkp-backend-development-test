@@ -17,6 +17,7 @@ func NewAuthHandler(uc user.IUserUsecase) *AuthHandler {
 func (h *AuthHandler) Register(c *fiber.Ctx) error {
 	type RegisterRequest struct {
 		Name     string `json:"name" validate:"required"`
+		Username string `json:"username" validate:"required,min=5"`
 		Email    string `json:"email" validate:"required,email"`
 		Password string `json:"password" validate:"required,min=6"`
 	}
@@ -29,7 +30,7 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 		return c.Status(422).JSON(fiber.Map{"errors": errs})
 	}
 
-	res, err := h.usecase.Register(req.Name, req.Email, req.Password)
+	res, err := h.usecase.Register(req.Name, req.Username, req.Email, req.Password)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": err.Error()})
 	}

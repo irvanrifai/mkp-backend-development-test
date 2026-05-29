@@ -1,0 +1,8 @@
+# .mockery.yaml
+with-expecter: true
+all: true
+case: underscore
+outpkg: mocks
+dir: mocks
+recursive: true 
+inpackage-suffix: false

@@ -3,6 +3,9 @@
 *.a
 *.so
 
+# secret files
+*.env
+
 # Folders
 _obj
 _test

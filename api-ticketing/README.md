@@ -47,6 +47,13 @@ cp .env.example .env
 
 ```
 
+### 2.1 Postman Collection
+
+File Postman sudah tersedia di direktori `doc/postman/`:
+
+* `doc/postman/Ticketing API Test.postman_collection.json`
+* `doc/postman/Ticketing.postman_environment.json`
+
 ### 3. Database Migration
 
 Gunakan Makefile untuk menjalankan migrasi database:

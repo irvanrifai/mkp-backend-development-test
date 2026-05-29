@@ -89,8 +89,9 @@ make test
 
 # Jalankan test coverage
 make test-cover
-
 ```
+
+> `make gen-mock` akan menghasilkan mock file ke folder `mocks/` menggunakan `mockery`.
 
 ---
 

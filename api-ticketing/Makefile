@@ -33,14 +33,18 @@ test-cover:
 
 ## Gen-Mock: Generate mock menggunakan mockery
 gen-mock:
-	mockery
+	@echo "Generating mock files..."
+	go run github.com/vektra/mockery/v2@latest --name=IUserRepository --dir=internal/repository/user --output=mocks --outpkg=mocks --case=underscore --with-expecter
+	go run github.com/vektra/mockery/v2@latest --name=IUserUsecase --dir=internal/usecase/user --output=mocks --outpkg=mocks --case=underscore --with-expecter
+	go run github.com/vektra/mockery/v2@latest --name=IScheduleRepository --dir=internal/repository/schedule --output=mocks --outpkg=mocks --case=underscore --with-expecter
+	go run github.com/vektra/mockery/v2@latest --name=IScheduleUsecase --dir=internal/usecase/schedule --output=mocks --outpkg=mocks --case=underscore --with-expecter
 
 ## Clean: Menghapus file binary
 clean:
 	@echo "Cleaning up..."
 	rm -rf tmp/
 
-.PHONY: all deps build run test clean
+.PHONY: all deps build run test gen-mock clean
 
 include .env
 export
